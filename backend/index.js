@@ -60,7 +60,7 @@ app.put('/api/notes/:id', (req, res) => {
   const index = notes.findIndex(note => note.id === noteId);
 
   if (index === -1) {
-    return res.status(404).json({ message: 'Note not found' });
+    return res.status(404).json({ message: 'Note missing' });
   }
 
   notes[index].completed = !notes[index].completed;

@@ -28,27 +28,31 @@ function App() {
   };
 
   const addNote = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!newNote.trim()) return;
+    e.preventDefault();
+    if (!newNote.trim()) return;
 
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: newNote }),
-    });
-    const addedNote = await response.json();
-    setNotes(prev => [...prev, addedNote]);
-    setNewNote('');
-  } catch (error) {
-    console.error('Error adding note:', error);
-    setError('Failed to add note. Please try again.');
-  }
-};
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: newNote }),
+      });
+      const addedNote = await response.json();
+      setNotes(prev => [...prev, addedNote]);
+      setNewNote('');
+    } catch (error) {
+      console.error('Error adding note:', error);
+      setError('Failed to add note. Please try again.');
+    }
+  };
 
   const toggleComplete = async (id: any) => {
     try {
-      
+      const response = await fetch(`${API_URL}/${id}`, { method: 'PUT' });
+      const updatedNote = await response.json();
+      setNotes(prev =>
+        prev.map(note => (note.id === id ? updatedNote : note))
+      );
     } catch (error) {
       console.error('Error toggling note completion:', error);
       setError('Failed to update note. Please try again.');
