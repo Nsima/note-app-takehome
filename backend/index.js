@@ -69,6 +69,11 @@ app.put('/api/notes/:id', (req, res) => {
 });
 
 app.delete('/api/notes/:id', (req, res) => {
+  const noteId = parseInt(req.params.id);
+  let notes = getNotes();
+  notes = notes.filter(note => note.id !== noteId);
+  saveNotes(notes);
+  res.status(204).end();
 });
 
 app.listen(PORT, () => {
