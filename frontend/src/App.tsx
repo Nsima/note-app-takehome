@@ -61,6 +61,8 @@ function App() {
 
   const deleteNote = async (id: any) => {
     try {
+      await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      setNotes(prev => prev.filter(note => note.id !== id));
     } catch (error) {
       console.error('Error deleting note:', error);
       setError('Failed to delete note. Please try again.');
