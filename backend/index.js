@@ -19,7 +19,10 @@ if (!fs.existsSync(DATA_FILE)) {
 // Helper function to read notes
 const getNotes = () => {
   try {
+    const data = fs.readFileSync(DATA_FILE, 'utf-8');
+    return JSON.parse(data);
   } catch (error) {
+    console.error("Error reading notes:", error);
     return [];
   }
 };
@@ -27,7 +30,9 @@ const getNotes = () => {
 // Helper function to write notes
 const saveNotes = (notes) => {
   try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(notes, null, 2));
   } catch (error) {
+    console.error("Error saving notes:", error);
   }
 };
 
@@ -38,6 +43,15 @@ app.get('/api/notes', (req, res) => {
 });
 
 app.post('/api/notes', (req, res) => {
+  const notes = getNotes();
+  const newNote = {
+    id: Date.now(), // crude unique ID
+    text: req.body.text,
+    completed: false,
+  };
+  notes.push(newNote);
+  saveNotes(notes);
+  res.status(201).json(newNote);
 });
 
 app.put('/api/notes/:id', (req, res) => {
