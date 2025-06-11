@@ -55,6 +55,17 @@ app.post('/api/notes', (req, res) => {
 });
 
 app.put('/api/notes/:id', (req, res) => {
+  const noteId = parseInt(req.params.id);
+  const notes = getNotes();
+  const index = notes.findIndex(note => note.id === noteId);
+
+  if (index === -1) {
+    return res.status(404).json({ message: 'Note not found' });
+  }
+
+  notes[index].completed = !notes[index].completed;
+  saveNotes(notes);
+  res.json(notes[index]);
 });
 
 app.delete('/api/notes/:id', (req, res) => {
