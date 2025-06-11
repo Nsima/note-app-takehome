@@ -45,7 +45,7 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
   const notes = getNotes();
   const newNote = {
-    id: Date.now(), // crude unique ID
+    id: Date.now(),
     text: req.body.text,
     completed: false,
   };
